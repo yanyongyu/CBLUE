@@ -128,9 +128,9 @@ class EEDataProcessor(object):
 class REDataProcessor(object):
     def __init__(self, root):
         self.task_data_dir = os.path.join(root, 'CMeIE')
-        self.train_path = os.path.join(self.task_data_dir, 'CMeIE_train.json')
-        self.dev_path = os.path.join(self.task_data_dir, 'CMeIE_dev.json')
-        self.test_path = os.path.join(self.task_data_dir, 'CMeIE_test.json')
+        self.train_path = os.path.join(self.task_data_dir, 'CMeIE_train.jsonl')
+        self.dev_path = os.path.join(self.task_data_dir, 'CMeIE_dev.jsonl')
+        self.test_path = os.path.join(self.task_data_dir, 'CMeIE_test.jsonl')
 
         self.schema_path = os.path.join(self.task_data_dir, '53_schemas.json')
         self.pre_sub_obj = None

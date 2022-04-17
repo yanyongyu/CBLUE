@@ -1446,7 +1446,7 @@ class ERTrainer(Trainer):
 
         logger.info("***** Running prediction *****")
         logger.info("Num samples %d", num_examples)
-        with open(os.path.join(args.output_dir, 'CMeIE_test.json'), 'w', encoding='utf-8') as f:
+        with open(os.path.join(args.output_dir, 'CMeIE_test.jsonl'), 'w', encoding='utf-8') as f:
             for step, item in enumerate(test_dataloader):
                 model.eval()
 
@@ -1617,7 +1617,7 @@ class RETrainer(Trainer):
         model.to(args.device)
 
         logger.info("***** Running prediction *****")
-        with open(os.path.join(args.result_output_dir, 'CMeIE_test.json'), 'w',
+        with open(os.path.join(args.result_output_dir, 'CMeIE_test.jsonl'), 'w',
                   encoding="utf-8") as f:
             for data in test_samples:
                 results, outputs = self.data_processor.build_text(data)

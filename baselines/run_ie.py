@@ -200,7 +200,7 @@ def main():
             ngram_dict = ZenNgramDict(os.path.join(args.model_dir, args.model_name), tokenizer=tokenizer)
 
         data_processor = REDataProcessor(root=args.data_dir)
-        test_samples = data_processor.get_test_sample(os.path.join(args.output_dir, 'CMeIE_test.json'))
+        test_samples = data_processor.get_test_sample(os.path.join(args.output_dir, 'CMeIE_test.jsonl'))
 
         config = None
         if args.model_type == 'zen':
