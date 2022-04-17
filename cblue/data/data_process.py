@@ -132,7 +132,7 @@ class REDataProcessor(object):
         self.dev_path = os.path.join(self.task_data_dir, 'CMeIE_dev.jsonl')
         self.test_path = os.path.join(self.task_data_dir, 'CMeIE_test.jsonl')
 
-        self.schema_path = os.path.join(self.task_data_dir, '53_schemas.json')
+        self.schema_path = os.path.join(self.task_data_dir, '53_schemas.jsonl')
         self.pre_sub_obj = None
         self.predicate2id = None
         self.id2predicate = None
