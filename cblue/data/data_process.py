@@ -267,9 +267,9 @@ class REDataProcessor(object):
 class ERDataProcessor(object):
     def __init__(self, root):
         self.task_data_dir = os.path.join(root, 'CMeIE')
-        self.train_path = os.path.join(self.task_data_dir, 'CMeIE_train.json')
-        self.dev_path = os.path.join(self.task_data_dir, 'CMeIE_dev.json')
-        self.test_path = os.path.join(self.task_data_dir, 'CMeIE_test.json')
+        self.train_path = os.path.join(self.task_data_dir, 'CMeIE_train.jsonl')
+        self.dev_path = os.path.join(self.task_data_dir, 'CMeIE_dev.jsonl')
+        self.test_path = os.path.join(self.task_data_dir, 'CMeIE_test.jsonl')
 
     def get_train_sample(self):
         return self._pre_process(self.train_path, is_predict=False)
