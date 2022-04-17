@@ -1493,7 +1493,7 @@ class ERTrainer(Trainer):
         output_dir = os.path.join(self.args.output_dir, 'checkpoint-{}'.format(step))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        torch.save(model.state_dict(), os.path.join(output_dir, 'pytorch_model.pt'))
+        torch.save(model.state_dict(), os.path.join(output_dir, 'task_model.pt'))
         self.logger.info('Saving models checkpoint to %s', output_dir)
 
         if self.args.model_type == 'zen':
@@ -1695,7 +1695,7 @@ class RETrainer(Trainer):
         output_dir = os.path.join(self.args.output_dir, 'checkpoint-{}'.format(step))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        torch.save(model.state_dict(), os.path.join(output_dir, 'pytorch_model.pt'))
+        torch.save(model.state_dict(), os.path.join(output_dir, 'task_model.pt'))
         self.logger.info('Saving models checkpoint to %s', output_dir)
         if self.args.model_type == 'zen':
             save_zen_model(output_dir, model.encoder, self.tokenizer, self.ngram_dict, self.args)
@@ -1881,7 +1881,7 @@ class CDNForCLSTrainer(Trainer):
         output_dir = os.path.join(self.args.output_dir, 'checkpoint-{}'.format(step))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        torch.save(model.state_dict(), os.path.join(output_dir, 'pytorch_model.pt'))
+        torch.save(model.state_dict(), os.path.join(output_dir, 'task_model.pt'))
         self.logger.info('Saving models checkpoint to %s', output_dir)
         if self.args.model_type == 'zen':
             save_zen_model(output_dir, model.encoder, self.tokenizer, self.ngram_dict, self.args)

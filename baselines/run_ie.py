@@ -119,9 +119,9 @@ def main():
 
         # **** save best model *****
         model = ERModel(model_class, encoder_path=os.path.join(args.output_dir, f'checkpoint-{best_step}'))
-        model.load_state_dict(torch.load(os.path.join(args.output_dir, f'checkpoint-{best_step}', 'pytorch_model.pt')))
+        model.load_state_dict(torch.load(os.path.join(args.output_dir, f'checkpoint-{best_step}', 'task_model.pt')))
         tokenizer = tokenizer_class.from_pretrained(os.path.join(args.output_dir, f'checkpoint-{best_step}'))
-        torch.save(model.state_dict(), os.path.join(args.output_dir, 'pytorch_model_er.pt'))
+        torch.save(model.state_dict(), os.path.join(args.output_dir, 'task_model_er.pt'))
         if not os.path.exists(os.path.join(args.output_dir, 'er')):
             os.mkdir(os.path.join(args.output_dir, 'er'))
         if args.model_type == 'zen':
@@ -161,9 +161,9 @@ def main():
             config.vocab_size += 4
         model = REModel(tokenizer, model_class, encoder_path=os.path.join(args.output_dir, f'checkpoint-{best_step}'),
                         num_labels=data_processor.num_labels, config=config)
-        model.load_state_dict(torch.load(os.path.join(args.output_dir, f'checkpoint-{best_step}', 'pytorch_model.pt')))
+        model.load_state_dict(torch.load(os.path.join(args.output_dir, f'checkpoint-{best_step}', 'task_model.pt')))
         tokenizer = tokenizer_class.from_pretrained(os.path.join(args.output_dir, f'checkpoint-{best_step}'))
-        torch.save(model.state_dict(), os.path.join(args.output_dir, 'pytorch_model_re.pt'))
+        torch.save(model.state_dict(), os.path.join(args.output_dir, 'task_model_re.pt'))
         if not os.path.exists(os.path.join(args.output_dir, 're')):
             os.mkdir(os.path.join(args.output_dir, 're'))
         if args.model_type == 'zen':
@@ -186,7 +186,7 @@ def main():
                                  mode='test', max_length=args.max_length, ngram_dict=ngram_dict,
                                  model_type=args.model_type)
         model = ERModel(model_class, encoder_path=os.path.join(args.output_dir, 'er'))
-        model.load_state_dict(torch.load(os.path.join(args.output_dir, 'pytorch_model_er.pt')))
+        model.load_state_dict(torch.load(os.path.join(args.output_dir, 'task_model_er.pt')))
         trainer = ERTrainer(args=args, model=model, data_processor=data_processor,
                             tokenizer=tokenizer, logger=logger, model_class=ERModel, ngram_dict=ngram_dict)
 
@@ -208,7 +208,7 @@ def main():
             config.vocab_size += 4
         model = REModel(tokenizer, model_class, os.path.join(args.output_dir, 're'),
                         num_labels=data_processor.num_labels, config=config)
-        model.load_state_dict(torch.load(os.path.join(args.output_dir, 'pytorch_model_re.pt')))
+        model.load_state_dict(torch.load(os.path.join(args.output_dir, 'task_model_re.pt')))
         trainer = RETrainer(args=args, model=model, data_processor=data_processor,
                             tokenizer=tokenizer, logger=logger, model_class=REModel, ngram_dict=ngram_dict)
         trainer.predict(test_samples=test_samples, model=model, re_dataset_class=REDataset)

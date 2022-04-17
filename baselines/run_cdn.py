@@ -140,9 +140,9 @@ def main():
 
         model = CDNForCLSModel(model_class, encoder_path=os.path.join(args.output_dir, f'checkpoint-{best_step}'),
                                num_labels=data_processor.num_labels_cls)
-        model.load_state_dict(torch.load(os.path.join(args.output_dir, f'checkpoint-{best_step}', 'pytorch_model.pt')))
+        model.load_state_dict(torch.load(os.path.join(args.output_dir, f'checkpoint-{best_step}', 'task_model.pt')))
         tokenizer = tokenizer_class.from_pretrained(os.path.join(args.output_dir, f'checkpoint-{best_step}'))
-        torch.save(model.state_dict(), os.path.join(args.output_dir, 'pytorch_model_cls.pt'))
+        torch.save(model.state_dict(), os.path.join(args.output_dir, 'task_model_cls.pt'))
         if not os.path.exists(os.path.join(args.output_dir, 'cls')):
             os.mkdir(os.path.join(args.output_dir, 'cls'))
 
@@ -187,7 +187,7 @@ def main():
 
         model = CDNForCLSModel(model_class, encoder_path=os.path.join(args.output_dir, 'cls'),
                                num_labels=data_processor.num_labels_cls)
-        model.load_state_dict(torch.load(os.path.join(args.output_dir, 'pytorch_model_cls.pt')))
+        model.load_state_dict(torch.load(os.path.join(args.output_dir, 'task_model_cls.pt')))
         trainer = CDNForCLSTrainer(args=args, model=model, data_processor=data_processor,
                                    tokenizer=tokenizer, logger=logger,
                                    recall_orig_eval_samples=recall_orig_test_samples,
