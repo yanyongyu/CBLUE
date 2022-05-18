@@ -1,14 +1,43 @@
-from .data_process import EEDataProcessor, REDataProcessor, ERDataProcessor, CTCDataProcessor, \
-    CDNDataProcessor, STSDataProcessor, QQRDataProcessor, QICDataProcessor, QTRDataProcessor
-from .dataset import EEDataset, REDataset, ERDataset, CTCDataset, CDNDataset, STSDataset, \
-    QQRDataset, QICDataset, QTRDataset
+from .dataset import (
+    EEDataset,
+    ERDataset,
+    REDataset,
+    CDNDataset,
+    CTCDataset,
+    QICDataset,
+    QQRDataset,
+    QTRDataset,
+    STSDataset,
+)
+from .data_process import (
+    EEDataProcessor,
+    ERDataProcessor,
+    REDataProcessor,
+    CDNDataProcessor,
+    CTCDataProcessor,
+    QICDataProcessor,
+    QQRDataProcessor,
+    QTRDataProcessor,
+    STSDataProcessor,
+)
 
-__all__ = ['EEDataProcessor', 'EEDataset',
-           'REDataProcessor', 'REDataset',
-           'ERDataProcessor', 'ERDataset',
-           'CDNDataProcessor', 'CDNDataset',
-           'CTCDataProcessor', 'CTCDataset',
-           'STSDataProcessor', 'STSDataset',
-           'QQRDataProcessor', 'QQRDataset',
-           'QICDataProcessor', 'QICDataset',
-           'QTRDataProcessor', 'QTRDataset']
+__all__ = [
+    "EEDataProcessor",
+    "EEDataset",
+    "REDataProcessor",
+    "REDataset",
+    "ERDataProcessor",
+    "ERDataset",
+    "CDNDataProcessor",
+    "CDNDataset",
+    "CTCDataProcessor",
+    "CTCDataset",
+    "STSDataProcessor",
+    "STSDataset",
+    "QQRDataProcessor",
+    "QQRDataset",
+    "QICDataProcessor",
+    "QICDataset",
+    "QTRDataProcessor",
+    "QTRDataset",
+]
