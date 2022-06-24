@@ -12,6 +12,7 @@ from transformers import (
     BertForSequenceClassification,
     AlbertForSequenceClassification,
 )
+from fl_tuning.models import modify_bert
 
 from cblue.utils import init_logger, seed_everything
 from cblue.trainer import (
@@ -59,12 +60,14 @@ MODEL_CLASS = {
     "bert": (BertTokenizer, BertForSequenceClassification),
     "roberta": (BertTokenizer, BertForSequenceClassification),
     "albert": (BertTokenizer, AlbertForSequenceClassification),
+    "fltuning": (BertTokenizer, modify_bert(BertForSequenceClassification)),
 }
 
 TOKEN_MODEL_CLASS = {
     "bert": (BertTokenizer, BertForTokenClassification),
     "roberta": (BertTokenizer, BertForTokenClassification),
     "albert": (BertTokenizer, AlbertForTokenClassification),
+    "fltuning": (BertTokenizer, modify_bert(BertForTokenClassification))
 }
 
 

@@ -5,6 +5,7 @@ sys.path.append(".")
 import argparse
 
 import torch
+from fl_tuning.models import modify_bert
 from transformers import BertModel, AlbertModel, BertTokenizer
 
 from cblue.models import ERModel, REModel
@@ -16,6 +17,7 @@ MODEL_CLASS = {
     "bert": (BertTokenizer, BertModel),
     "roberta": (BertTokenizer, BertModel),
     "albert": (BertTokenizer, AlbertModel),
+    "fltuning": (BertTokenizer, modify_bert(BertModel)),
 }
 
 

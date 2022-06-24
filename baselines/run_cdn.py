@@ -12,6 +12,7 @@ from transformers import (
     BertForSequenceClassification,
     AlbertForSequenceClassification,
 )
+from fl_tuning.models import modify_bert
 
 from cblue.models import CDNForCLSModel
 from cblue.data import CDNDataset, CDNDataProcessor
@@ -22,12 +23,14 @@ MODEL_CLASS = {
     "bert": (BertTokenizer, BertModel),
     "roberta": (BertTokenizer, BertModel),
     "albert": (BertTokenizer, AlbertModel),
+    "fltuning": (BertTokenizer, modify_bert(BertModel)),
 }
 
 CLS_MODEL_CLASS = {
     "bert": BertForSequenceClassification,
     "roberta": BertForSequenceClassification,
     "albert": AlbertForSequenceClassification,
+    "fltuning": modify_bert(BertForSequenceClassification),
 }
 
 
