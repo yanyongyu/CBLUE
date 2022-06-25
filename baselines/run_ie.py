@@ -17,7 +17,16 @@ MODEL_CLASS = {
     "bert": (BertTokenizer, BertModel),
     "roberta": (BertTokenizer, BertModel),
     "albert": (BertTokenizer, AlbertModel),
-    "fltuning": (BertTokenizer, modify_bert(BertModel)),
+    "fltuning": (
+        BertTokenizer,
+        modify_bert(
+            BertModel,
+            intermediate_module="encoder.layer.*.intermediate",
+            intermediate_output_module="encoder.layer.*.output",
+            attention_module="encoder.layer.*.attention.self",
+            attention_output_module="encoder.layer.*.attention.output",
+        ),
+    ),
 }
 
 
