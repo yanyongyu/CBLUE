@@ -21,6 +21,8 @@ MODEL_CLASS = {
         BertTokenizer,
         modify_bert(
             BertModel,
+            None,
+            None,
             intermediate_module="encoder.layer.*.intermediate",
             intermediate_output_module="encoder.layer.*.output",
             attention_module="encoder.layer.*.attention.self",

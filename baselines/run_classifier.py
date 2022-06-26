@@ -60,14 +60,14 @@ MODEL_CLASS = {
     "bert": (BertTokenizer, BertForSequenceClassification),
     "roberta": (BertTokenizer, BertForSequenceClassification),
     "albert": (BertTokenizer, AlbertForSequenceClassification),
-    "fltuning": (BertTokenizer, modify_bert(BertForSequenceClassification)),
+    "fltuning": (BertTokenizer, modify_bert(BertForSequenceClassification, None, None)),
 }
 
 TOKEN_MODEL_CLASS = {
     "bert": (BertTokenizer, BertForTokenClassification),
     "roberta": (BertTokenizer, BertForTokenClassification),
     "albert": (BertTokenizer, AlbertForTokenClassification),
-    "fltuning": (BertTokenizer, modify_bert(BertForTokenClassification))
+    "fltuning": (BertTokenizer, modify_bert(BertForTokenClassification, None, None))
 }
 
 
