@@ -42,6 +42,9 @@ CLS_MODEL_CLASS = {
     "roberta": BertForSequenceClassification,
     "albert": AlbertForSequenceClassification,
     "fltuning": modify_bert(BertForSequenceClassification, None, None),
+    "domain-enhance": domain_enhance_att(
+        domain_enhance_ffn(BertForSequenceClassification)
+    ),
 }
 
 
