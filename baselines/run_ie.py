@@ -7,6 +7,10 @@ import argparse
 import torch
 from fl_tuning.models import modify_bert
 from transformers import BertModel, AlbertModel, BertTokenizer
+from nlppets.transformers.model.bert import (
+    domain_enhance_att,
+    domain_enhance_ffn,
+)
 
 from cblue.models import ERModel, REModel
 from cblue.trainer import ERTrainer, RETrainer
@@ -19,15 +23,11 @@ MODEL_CLASS = {
     "albert": (BertTokenizer, AlbertModel),
     "fltuning": (
         BertTokenizer,
-        modify_bert(
-            BertModel,
-            None,
-            None,
-            intermediate_module="encoder.layer.*.intermediate",
-            intermediate_output_module="encoder.layer.*.output",
-            attention_module="encoder.layer.*.attention.self",
-            attention_output_module="encoder.layer.*.attention.output",
-        ),
+        modify_bert(BertModel, None, None),
+    ),
+    "domain-enhance": (
+        BertTokenizer,
+        domain_enhance_att(domain_enhance_ffn(BertModel)),
     ),
 }
 
