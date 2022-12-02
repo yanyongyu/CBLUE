@@ -2,13 +2,13 @@
 DATA_DIR="CBLUEDatasets"
 
 TASK_NAME="sts"
-MODEL_TYPE="bert"
+MODEL_TYPE="domain-enhance"
 MODEL_DIR="data/model_data"
 MODEL_NAME="chinese-bert-wwm"
 OUTPUT_DIR="data/output"
 RESULT_OUTPUT_DIR="data/result_output"
 
-MAX_LENGTH=50
+MAX_LENGTH=40
 
 echo "Start running"
 
@@ -25,10 +25,10 @@ if [ $# == 0 ]; then
         --max_length=${MAX_LENGTH} \
         --train_batch_size=16 \
         --eval_batch_size=16 \
-        --learning_rate=2e-5 \
+        --learning_rate=4e-5 \
         --epochs=3 \
         --warmup_proportion=0.1 \
-        --earlystop_patience=3 \
+        --earlystop_patience=100 \
         --logging_steps=250 \
         --save_steps=250 \
         --seed=2021

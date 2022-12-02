@@ -1403,7 +1403,7 @@ class ERTrainer(Trainer):
                     obj_end_logits,
                 ) = model(input_ids, token_type_ids, attention_mask)
 
-            active_index = attention_mask.view(-1) == 1
+            active_index = attention_mask.cpu().view(-1) == 1
             sub_start_preds.extend(
                 (sub_start_logits.detach().view(-1) >= 0.5)
                 .cpu()

@@ -5,7 +5,6 @@ sys.path.append(".")
 import argparse
 
 import torch
-from fl_tuning.models import modify_bert
 from nlppets.transformers.model.bert import (
     domain_enhance_att,
     domain_enhance_ffn,
@@ -64,10 +63,6 @@ MODEL_CLASS = {
     "bert": (BertTokenizer, BertForSequenceClassification),
     "roberta": (BertTokenizer, BertForSequenceClassification),
     "albert": (BertTokenizer, AlbertForSequenceClassification),
-    "fltuning": (
-        BertTokenizer,
-        modify_bert(BertForSequenceClassification, None, None),
-    ),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertForSequenceClassification)),
@@ -78,10 +73,6 @@ TOKEN_MODEL_CLASS = {
     "bert": (BertTokenizer, BertForTokenClassification),
     "roberta": (BertTokenizer, BertForTokenClassification),
     "albert": (BertTokenizer, AlbertForTokenClassification),
-    "fltuning": (
-        BertTokenizer,
-        modify_bert(BertForTokenClassification, None, None),
-    ),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertForTokenClassification)),
