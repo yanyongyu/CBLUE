@@ -4,7 +4,7 @@ DATA_DIR="CBLUEDatasets"
 TASK_NAME="qtr"
 MODEL_TYPE="domain-enhance"
 MODEL_DIR="data/model_data"
-MODEL_NAME="chinese-bert-ext"
+MODEL_NAME="domain-enhance-101000"
 OUTPUT_DIR="data/output"
 RESULT_OUTPUT_DIR="data/result_output"
 

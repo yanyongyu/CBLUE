@@ -331,7 +331,7 @@ class EETrainer(Trainer):
 
                 logits = outputs[0].detach()
                 # active_index = (inputs['attention_mask'] == 1).cpu()
-                active_index = attention_mask == 1
+                active_index = (attention_mask == 1).cpu()
                 preds = logits.argmax(dim=-1).cpu()
 
                 for i in range(len(active_index)):
