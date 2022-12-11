@@ -31,7 +31,7 @@ if [ $# == 0 ]; then
         --earlystop_patience=100 \
         --logging_steps=250 \
         --save_steps=250 \
-        --seed=2021
+        --seed=6666
 elif [ $1 == "predict" ]; then
     python baselines/run_classifier.py \
         --data_dir=${DATA_DIR} \
@@ -44,5 +44,5 @@ elif [ $1 == "predict" ]; then
         --do_predict \
         --max_length=${MAX_LENGTH} \
         --eval_batch_size=16 \
-        --seed=2021
+        --seed=6666
 fi

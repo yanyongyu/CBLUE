@@ -31,7 +31,7 @@ if [ $# == 0 ]; then
         --earlystop_patience=100 \
         --logging_steps=200 \
         --save_steps=200 \
-        --seed=2021
+        --seed=6666
 elif [ $1 == "predict" ]; then
     python baselines/run_ie.py \
         --data_dir=${DATA_DIR} \
