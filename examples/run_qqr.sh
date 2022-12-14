@@ -6,7 +6,7 @@ MODEL_TYPE="domain-enhance"
 MODEL_DIR="data/model_data"
 MODEL_NAME="domain-enhance-101000"
 OUTPUT_DIR="data/output"
-RESULT_OUTPUT_DIR="data/result_output"
+RESULT_OUTPUT_DIR="data/result_output/${MODEL_NAME}"
 
 MAX_LENGTH=30
 
@@ -31,8 +31,8 @@ if [ $# == 0 ]; then
         --epochs=3 \
         --warmup_proportion=0.1 \
         --earlystop_patience=100 \
-        --logging_steps=250 \
-        --save_steps=250 \
+        --logging_steps=25 \
+        --save_steps=25 \
         --seed=${SEED}
 elif [ $1 == "predict" ]; then
     python baselines/run_classifier.py \
