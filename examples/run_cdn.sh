@@ -14,6 +14,8 @@ RECALL_K=200
 NUM_NEGATIVE_SAMPLES=5
 DO_AUGMENT=6
 
+SEED=${SEED:-2022}
+
 echo "Start running"
 
 if [ $# == 0 ]; then
@@ -30,7 +32,7 @@ if [ $# == 0 ]; then
         --num_neg=${NUM_NEGATIVE_SAMPLES} \
         --do_aug=${DO_AUGMENT} \
         --max_length=${MAX_LENGTH} \
-        --train_batch_size=32 \
+        --train_batch_size=128 \
         --eval_batch_size=256 \
         --learning_rate=4e-5 \
         --epochs=3 \
@@ -38,7 +40,7 @@ if [ $# == 0 ]; then
         --earlystop_patience=100 \
         --logging_steps=250 \
         --save_steps=250 \
-        --seed=6666
+        --seed=${SEED}
 elif [ $1 == "predict" ]; then
     python baselines/run_cdn.py \
         --data_dir=${DATA_DIR} \
@@ -54,5 +56,5 @@ elif [ $1 == "predict" ]; then
         --do_predict \
         --max_length=${MAX_LENGTH} \
         --eval_batch_size=256 \
-        --seed=6666
+        --seed=${SEED}
 fi

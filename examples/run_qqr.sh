@@ -10,6 +10,8 @@ RESULT_OUTPUT_DIR="data/result_output"
 
 MAX_LENGTH=30
 
+SEED=${SEED:-2022}
+
 echo "Start running"
 
 if [ $# == 0 ]; then
@@ -23,15 +25,15 @@ if [ $# == 0 ]; then
         --result_output_dir=${RESULT_OUTPUT_DIR} \
         --do_train \
         --max_length=${MAX_LENGTH} \
-        --train_batch_size=16 \
-        --eval_batch_size=16 \
+        --train_batch_size=128 \
+        --eval_batch_size=128 \
         --learning_rate=3e-5 \
         --epochs=3 \
         --warmup_proportion=0.1 \
         --earlystop_patience=100 \
         --logging_steps=250 \
         --save_steps=250 \
-        --seed=6666
+        --seed=${SEED}
 elif [ $1 == "predict" ]; then
     python baselines/run_classifier.py \
         --data_dir=${DATA_DIR} \
@@ -43,6 +45,6 @@ elif [ $1 == "predict" ]; then
         --result_output_dir=${RESULT_OUTPUT_DIR} \
         --do_predict \
         --max_length=${MAX_LENGTH} \
-        --eval_batch_size=16 \
-        --seed=6666
+        --eval_batch_size=128 \
+        --seed=${SEED}
 fi
