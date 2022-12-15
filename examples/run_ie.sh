@@ -28,11 +28,11 @@ if [ $# == 0 ]; then
         --train_batch_size=128 \
         --eval_batch_size=128 \
         --learning_rate=4e-5 \
-        --epochs=7 \
+        --epochs=28 \
         --warmup_proportion=0.1 \
         --earlystop_patience=100 \
-        --logging_steps=40 \
-        --save_steps=40 \
+        --logging_steps=200 \
+        --save_steps=200 \
         --seed=${SEED}
 elif [ $1 == "predict" ]; then
     python baselines/run_ie.py \

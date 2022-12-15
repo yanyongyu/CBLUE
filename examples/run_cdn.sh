@@ -35,11 +35,11 @@ if [ $# == 0 ]; then
         --train_batch_size=128 \
         --eval_batch_size=256 \
         --learning_rate=4e-5 \
-        --epochs=3 \
+        --epochs=12 \
         --warmup_proportion=0.1 \
         --earlystop_patience=100 \
-        --logging_steps=50 \
-        --save_steps=50 \
+        --logging_steps=250 \
+        --save_steps=250 \
         --seed=${SEED}
 elif [ $1 == "predict" ]; then
     python baselines/run_cdn.py \
