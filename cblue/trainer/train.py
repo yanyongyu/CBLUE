@@ -1482,7 +1482,7 @@ class ERTrainer(Trainer):
                     text = test_dataset.texts[step]
                     text_start_id, text_end_id = (
                         1,
-                        attention_mask.sum().int().item(),
+                        attention_mask.sum().int().item() - 1,
                     )  # end+1
                     text_mapping = TokenRematch().rematch(
                         text, self.tokenizer.tokenize(text)
