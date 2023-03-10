@@ -32,14 +32,14 @@ if [ $# == 0 ]; then
         --num_neg=${NUM_NEGATIVE_SAMPLES} \
         --do_aug=${DO_AUGMENT} \
         --max_length=${MAX_LENGTH} \
-        --train_batch_size=128 \
+        --train_batch_size=32 \
         --eval_batch_size=256 \
         --learning_rate=4e-5 \
-        --epochs=12 \
+        --epochs=3 \
         --warmup_proportion=0.1 \
         --earlystop_patience=100 \
-        --logging_steps=250 \
-        --save_steps=250 \
+        --logging_steps=30 \
+        --save_steps=30 \
         --seed=${SEED}
 elif [ $1 == "predict" ]; then
     python baselines/run_cdn.py \
