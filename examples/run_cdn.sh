@@ -32,10 +32,10 @@ if [ $# == 0 ]; then
         --num_neg=${NUM_NEGATIVE_SAMPLES} \
         --do_aug=${DO_AUGMENT} \
         --max_length=${MAX_LENGTH} \
-        --train_batch_size=32 \
+        --train_batch_size=128 \
         --eval_batch_size=256 \
         --learning_rate=4e-5 \
-        --epochs=3 \
+        --epochs=12 \
         --warmup_proportion=0.1 \
         --earlystop_patience=100 \
         --logging_steps=30 \
