@@ -19,13 +19,17 @@ from transformers import (
 
 from cblue.models import CDNForCLSModel
 from cblue.data import CDNDataset, CDNDataProcessor
-from cblue.utils import init_logger, seed_everything
 from cblue.trainer import CDNForCLSTrainer, CDNForNUMTrainer
+from cblue.utils import LoRAModel, init_logger, seed_everything
 
 MODEL_CLASS = {
     "bert": (BertTokenizer, BertModel),
     "roberta": (BertTokenizer, BertModel),
     "albert": (BertTokenizer, AlbertModel),
+    "bert-lora": (
+        BertTokenizer,
+        LoRAModel(BertModel.from_pretrained("hfl/chinese-roberta-wwm-ext")),
+    ),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertModel)),
@@ -36,6 +40,11 @@ CLS_MODEL_CLASS = {
     "bert": BertForSequenceClassification,
     "roberta": BertForSequenceClassification,
     "albert": AlbertForSequenceClassification,
+    "bert-lora": LoRAModel(
+        BertForSequenceClassification.from_pretrained(
+            "hfl/chinese-roberta-wwm-ext"
+        )
+    ),
     "domain-enhance": domain_enhance_att(
         domain_enhance_ffn(BertForSequenceClassification)
     ),

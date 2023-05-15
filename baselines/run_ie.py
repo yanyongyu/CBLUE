@@ -13,13 +13,17 @@ from nlppets.transformers.model.bert import (
 
 from cblue.models import ERModel, REModel
 from cblue.trainer import ERTrainer, RETrainer
-from cblue.utils import init_logger, seed_everything
+from cblue.utils import LoRAModel, init_logger, seed_everything
 from cblue.data import ERDataset, REDataset, ERDataProcessor, REDataProcessor
 
 MODEL_CLASS = {
     "bert": (BertTokenizer, BertModel),
     "roberta": (BertTokenizer, BertModel),
     "albert": (BertTokenizer, AlbertModel),
+    "bert-lora": (
+        BertTokenizer,
+        LoRAModel(BertModel.from_pretrained("hfl/chinese-roberta-wwm-ext")),
+    ),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertModel)),

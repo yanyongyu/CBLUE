@@ -4,9 +4,14 @@ import time
 import random
 import logging
 import unicodedata
+from typing import Optional
 
 import torch
 import numpy as np
+import torch.nn as nn
+from peft.utils import WEIGHTS_NAME
+from huggingface_hub import hf_hub_download
+from peft import PeftModel, LoraConfig, set_peft_model_state_dict
 
 
 def load_json(input_file):
@@ -190,3 +195,75 @@ class TokenRematch:
                 offset = end
 
         return token_mapping
+
+
+class LoRAModel:
+    def __init__(self, base_model, remove_prefix: Optional[str] = None) -> None:
+        self.base_model = base_model
+
+    def get_model_state_dict(self, loaded_state_dict: dict) -> dict:
+        prefix = getattr(self.base_model, "base_model_prefix", None)
+        if not prefix:
+            return loaded_state_dict
+
+        peft_prefix = "base_model.model."
+        loaded_keys = {
+            s[len(peft_prefix) :]: tensor
+            for s, tensor in loaded_state_dict.items()
+            if s.startswith(peft_prefix)
+        }
+        loaded_keys_not_prefixed = {
+            s: tensor
+            for s, tensor in loaded_state_dict.items()
+            if not s.startswith(peft_prefix)
+        }
+
+        model_state_dict = self.base_model.state_dict()
+        expected_keys = list(model_state_dict.keys())
+        has_prefix_module = any(s.startswith(prefix) for s in loaded_keys)
+        expects_prefix_module = any(s.startswith(prefix) for s in expected_keys)
+
+        remove_prefix_from_model = (
+            has_prefix_module and not expects_prefix_module
+        )
+        add_prefix_to_model = not has_prefix_module and expects_prefix_module
+
+        _prefix = f"{prefix}."
+        if remove_prefix_from_model:
+            prefix_removed = {
+                (s[len(_prefix) :] if s.startswith(_prefix) else s): tensor
+                for s, tensor in loaded_keys.items()
+            }
+            return {**loaded_keys_not_prefixed, **prefix_removed}
+        elif add_prefix_to_model:
+            prefix_added = {
+                (_prefix + s if not s.startswith(_prefix) else s): tensor
+                for s, tensor in loaded_keys.items()
+            }
+            return {**loaded_keys_not_prefixed, **prefix_added}
+        return loaded_state_dict
+
+    def from_pretrained(self, model_id: str):
+        config = LoraConfig.from_pretrained(model_id)
+        model = PeftModel(self.base_model, config)
+
+        if os.path.exists(os.path.join(model_id, WEIGHTS_NAME)):
+            filename = os.path.join(model_id, WEIGHTS_NAME)
+        else:
+            try:
+                filename = hf_hub_download(model_id, WEIGHTS_NAME)
+            except:  # noqa
+                raise ValueError(
+                    f"Can't find weights for {model_id} in {model_id} or in the Hugging Face Hub. "
+                    f"Please check that the file {WEIGHTS_NAME} is present at {model_id}."
+                )
+
+        adapters_weights = torch.load(
+            filename,
+            map_location=torch.device(
+                "cuda" if torch.cuda.is_available() else "cpu"
+            ),
+        )
+        model = set_peft_model_state_dict(
+            model, self.get_model_state_dict(adapters_weights)
+        )

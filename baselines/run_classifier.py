@@ -17,7 +17,7 @@ from transformers import (
     AlbertForSequenceClassification,
 )
 
-from cblue.utils import init_logger, seed_everything
+from cblue.utils import LoRAModel, init_logger, seed_everything
 from cblue.trainer import (
     EETrainer,
     CTCTrainer,
@@ -63,6 +63,14 @@ MODEL_CLASS = {
     "bert": (BertTokenizer, BertForSequenceClassification),
     "roberta": (BertTokenizer, BertForSequenceClassification),
     "albert": (BertTokenizer, AlbertForSequenceClassification),
+    "bert-lora": (
+        BertTokenizer,
+        LoRAModel(
+            BertForSequenceClassification.from_pretrained(
+                "hfl/chinese-roberta-wwm-ext"
+            )
+        ),
+    ),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertForSequenceClassification)),
@@ -73,6 +81,14 @@ TOKEN_MODEL_CLASS = {
     "bert": (BertTokenizer, BertForTokenClassification),
     "roberta": (BertTokenizer, BertForTokenClassification),
     "albert": (BertTokenizer, AlbertForTokenClassification),
+    "bert-lora": (
+        BertTokenizer,
+        LoRAModel(
+            BertForTokenClassification.from_pretrained(
+                "hfl/chinese-roberta-wwm-ext"
+            )
+        ),
+    ),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertForTokenClassification)),
