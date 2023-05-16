@@ -270,7 +270,7 @@ class LoRAModel:
                 "cuda" if torch.cuda.is_available() else "cpu"
             ),
         )
-        model = set_peft_model_state_dict(
+        set_peft_model_state_dict(
             model, self.get_model_state_dict(base_model, adapters_weights)
         )
         return model
