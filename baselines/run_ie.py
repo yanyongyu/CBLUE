@@ -22,7 +22,11 @@ MODEL_CLASS = {
     "albert": (BertTokenizer, AlbertModel),
     "bert-lora": (
         BertTokenizer,
-        LoRAModel(BertModel.from_pretrained("hfl/chinese-roberta-wwm-ext")),
+        LoRAModel(
+            lambda *args, **kwargs: BertModel.from_pretrained(
+                "hfl/chinese-roberta-wwm-ext", *args, **kwargs
+            )
+        ),
     ),
     "domain-enhance": (
         BertTokenizer,

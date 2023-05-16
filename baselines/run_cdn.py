@@ -28,7 +28,11 @@ MODEL_CLASS = {
     "albert": (BertTokenizer, AlbertModel),
     "bert-lora": (
         BertTokenizer,
-        LoRAModel(BertModel.from_pretrained("hfl/chinese-roberta-wwm-ext")),
+        LoRAModel(
+            lambda *args, **kwargs: BertModel.from_pretrained(
+                "hfl/chinese-roberta-wwm-ext", *args, **kwargs
+            )
+        ),
     ),
     "domain-enhance": (
         BertTokenizer,
@@ -41,8 +45,8 @@ CLS_MODEL_CLASS = {
     "roberta": BertForSequenceClassification,
     "albert": AlbertForSequenceClassification,
     "bert-lora": LoRAModel(
-        BertForSequenceClassification.from_pretrained(
-            "hfl/chinese-roberta-wwm-ext"
+        lambda *args, **kwargs: BertForSequenceClassification.from_pretrained(
+            "hfl/chinese-roberta-wwm-ext", *args, **kwargs
         )
     ),
     "domain-enhance": domain_enhance_att(

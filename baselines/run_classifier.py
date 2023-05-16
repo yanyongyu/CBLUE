@@ -66,8 +66,8 @@ MODEL_CLASS = {
     "bert-lora": (
         BertTokenizer,
         LoRAModel(
-            BertForSequenceClassification.from_pretrained(
-                "hfl/chinese-roberta-wwm-ext"
+            lambda *args, **kwargs: BertForSequenceClassification.from_pretrained(
+                "hfl/chinese-roberta-wwm-ext", *args, **kwargs
             )
         ),
     ),
@@ -84,8 +84,8 @@ TOKEN_MODEL_CLASS = {
     "bert-lora": (
         BertTokenizer,
         LoRAModel(
-            BertForTokenClassification.from_pretrained(
-                "hfl/chinese-roberta-wwm-ext"
+            lambda *args, **kwargs: BertForTokenClassification.from_pretrained(
+                "hfl/chinese-roberta-wwm-ext", *args, **kwargs
             )
         ),
     ),

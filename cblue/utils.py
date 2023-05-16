@@ -4,7 +4,7 @@ import time
 import random
 import logging
 import unicodedata
-from typing import Optional
+from typing import Any, Callable, Optional
 
 import torch
 import numpy as np
@@ -198,11 +198,16 @@ class TokenRematch:
 
 
 class LoRAModel:
-    def __init__(self, base_model, remove_prefix: Optional[str] = None) -> None:
-        self.base_model = base_model
+    def __init__(self, base_model_factory: Callable[..., Any]) -> None:
+        self.base_model_factory = base_model_factory
 
-    def get_model_state_dict(self, loaded_state_dict: dict) -> dict:
-        prefix = getattr(self.base_model, "base_model_prefix", None)
+    def get_base_model(self, *args: Any, **kwargs: Any) -> nn.Module:
+        return self.base_model_factory(*args, **kwargs)
+
+    def get_model_state_dict(
+        self, base_model: nn.Module, loaded_state_dict: dict
+    ) -> dict:
+        prefix = getattr(base_model, "base_model_prefix", None)
         if not prefix:
             return loaded_state_dict
 
@@ -218,7 +223,7 @@ class LoRAModel:
             if not s.startswith(peft_prefix)
         }
 
-        model_state_dict = self.base_model.state_dict()
+        model_state_dict = base_model.state_dict()
         expected_keys = list(model_state_dict.keys())
         has_prefix_module = any(s.startswith(prefix) for s in loaded_keys)
         expects_prefix_module = any(s.startswith(prefix) for s in expected_keys)
@@ -243,9 +248,10 @@ class LoRAModel:
             return {**loaded_keys_not_prefixed, **prefix_added}
         return loaded_state_dict
 
-    def from_pretrained(self, model_id: str):
+    def from_pretrained(self, model_id: str, *args: Any, **kwargs: Any):
         config = LoraConfig.from_pretrained(model_id)
-        model = PeftModel(self.base_model, config)
+        base_model = self.get_base_model(*args, **kwargs)
+        model = PeftModel(base_model, config)
 
         if os.path.exists(os.path.join(model_id, WEIGHTS_NAME)):
             filename = os.path.join(model_id, WEIGHTS_NAME)
@@ -259,11 +265,11 @@ class LoRAModel:
                 )
 
         adapters_weights = torch.load(
-            filename,
+            filename,  # type: ignore
             map_location=torch.device(
                 "cuda" if torch.cuda.is_available() else "cpu"
             ),
         )
         model = set_peft_model_state_dict(
-            model, self.get_model_state_dict(adapters_weights)
+            model, self.get_model_state_dict(base_model, adapters_weights)
         )
