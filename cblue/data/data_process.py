@@ -726,7 +726,6 @@ class CDNDataProcessor(object):
 
         else:
             for text, recall_label in zip(texts, recall_samples_idx):
-
                 recall_orig_samples["text"].append(text)
                 recall_orig_samples["recall_label"].append(recall_label)
                 recall_orig_samples["label"].append([0])
@@ -772,7 +771,9 @@ class CDNDataProcessor(object):
         return dictionary, index, tfidf
 
     def _recall(self, texts):
-        recall_scores_idx = np.zeros((len(texts), self.recall_k), dtype=np.int)
+        recall_scores_idx = np.zeros(
+            (len(texts), self.recall_k), dtype=np.int64
+        )
 
         recall_scores = np.zeros((len(texts), self.recall_k))
         for i, x in tqdm.tqdm(enumerate(texts), total=len(texts)):
