@@ -6,7 +6,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/CBLUEbenchmark/CBLUE?style=flat-square)](https://github.com/CBLUEbenchmark/CBLUE/stargazers)
 ![](https://img.shields.io/badge/PRs-Welcome-red) 
 
-在医疗领域，人工智能开始发挥其作用，助力医疗技术水平提高。为了进一步促进AI+医疗的研究进展，我们发布了中文医学语言理解测评（CBLUE），包括数据集、基准模型、排行榜。
+在医疗领域，人工智能开始发挥其作用，助力医疗技术水平提高。为了进一步促进AI+医疗的研究进展，我们发布了[中文医学语言理解测评](https://arxiv.org/pdf/2106.08087.pdf)（CBLUE），包括数据集、基准模型、排行榜。
 
 ## 测评基准（CBLUE Benchmark）
 
@@ -174,7 +174,42 @@ python baselines/run_classifier.py \
 
 预测结果 `{task}_test.json` 将生成在 `RESULT_OUTPUT_DIR` 目录下。
 
-##### 提交结果（Submitting results）
+#### 格式检查（Check format）
+
+在提交结果文件之前，可以使用`format_checker`来检查文件格式，避免因为格式不正确导致的无效评估。
+
+* Step1: 将原始的测试文件（没有答案）`{taskname}_test.[json|jsonl|tsv]` 复制到 `format_checker` 目录底下，并重命名为 `{taskname}_test_raw.[json|jsonl|tsv]`.
+```
+# take the CMeEE task for example:
+cp ${path_to_CMeEE}/CMeEE_test.json ${current_dir}/CMeEE_test_raw.json 
+```
+* Step2: 输入原始测试文件和你预测产生的文件，运行下面的格式检查脚本：
+```
+python3 format_checker_${taskname}.py {taskname}_test_raw.[json|jsonl|tsv] {taskname}_test.[json|jsonl|tsv] 
+
+# take the CMeEE task for example:
+python3 format_checker_CMeEE.py CMeEE_test_raw.json CMeEE_test.json
+```
+另外，下面的任务有别于上面的任务：
+**IMCS-NER & IMCS-V2-NER tasks:**
+* Step1: 将原始的测试文件`IMCS-NER_test.json(IMCS-V2-NER_test.json)` 和 `IMCS_test.json(IMCS-V2_test.json)`复制到`format_checker`目录底下，并重命名为`IMCS-NER_test_raw.json(IMCS-V2-NER_test_raw.json)`：
+```
+# for IMCS-NER task:
+cp ${path_to_IMCS-NER}/IMCS-NER_test.json ${current_dir}/IMCS-NER_test_raw.json 
+cp ${path_to_IMCS-NER}/IMCS_test.json ${current_dir}
+# for IMCS-V2-NER task:
+cp ${path_to_IMCS-V2-NER}/IMCS-V2-NER_test.json ${current_dir}/IMCS-V2-NER_test_raw.json 
+cp ${path_to_IMCS-V2-NER}/IMCS-V2_test.json ${current_dir}
+```
+* Step2: 按下面的命令执行格式检查的脚本：
+```
+# for IMCS-NER task:
+python3 format_checker_IMCS_V1_NER.py  IMCS-NER_test_raw.json IMCS-NER_test.json IMCS_test.json
+# for IMCS-V2-NER task:
+python3 format_checker_IMCS_V2_NER.py  IMCS-V2-NER_test_raw.json IMCS-V2-NER_test.json IMCS-V2_test.json
+```
+
+#### 提交结果（Submitting results）
 
 将 `RESULT_OUTPUT_DIR` 目录下的结果文件打包成 `.zip` 文件便可提交， [提交结果](https://tianchi.aliyun.com/dataset/dataDetail?dataId=95414) 
 
@@ -679,11 +714,39 @@ from cblue.metrics import er_metric, er_commit_prediction, re_metric, re_commit_
 ## How to Cite
 
 ```bibtex
-@article{zhang2021cblue,
-title={CBLUE: A Chinese Biomedical Language Understanding Evaluation Benchmark},
-author={Ningyu Zhang and Mosha Chen and Zhen Bi and Xiaozhuan Liang and Lei Li and Xin Shang and Kangping Yin and Chuanqi Tan and Jian Xu and Fei Huang and Luo Si and Yuan Ni and Guotong Xie and Zhifang Sui and Baobao Chang and Hui Zong and Zheng Yuan and Linfeng Li and Jun Yan and Hongying Zan and Kunli Zhang and Buzhou Tang and Qingcai Chen},
-journal={arXiv preprint arXiv:2106.08087},
-year={2021}
+@inproceedings{zhang-etal-2022-cblue,
+    title = "{CBLUE}: A {C}hinese Biomedical Language Understanding Evaluation Benchmark",
+    author = "Zhang, Ningyu  and
+      Chen, Mosha  and
+      Bi, Zhen  and
+      Liang, Xiaozhuan  and
+      Li, Lei  and
+      Shang, Xin  and
+      Yin, Kangping  and
+      Tan, Chuanqi  and
+      Xu, Jian  and
+      Huang, Fei  and
+      Si, Luo  and
+      Ni, Yuan  and
+      Xie, Guotong  and
+      Sui, Zhifang  and
+      Chang, Baobao  and
+      Zong, Hui  and
+      Yuan, Zheng  and
+      Li, Linfeng  and
+      Yan, Jun  and
+      Zan, Hongying  and
+      Zhang, Kunli  and
+      Tang, Buzhou  and
+      Chen, Qingcai",
+    booktitle = "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.acl-long.544",
+    pages = "7888--7915",
+    abstract = "Artificial Intelligence (AI), along with the recent progress in biomedical language understanding, is gradually offering great promise for medical practice. With the development of biomedical language understanding benchmarks, AI applications are widely used in the medical field. However, most benchmarks are limited to English, which makes it challenging to replicate many of the successes in English for other languages. To facilitate research in this direction, we collect real-world biomedical data and present the first Chinese Biomedical Language Understanding Evaluation (CBLUE) benchmark: a collection of natural language understanding tasks including named entity recognition, information extraction, clinical diagnosis normalization, single-sentence/sentence-pair classification, and an associated online platform for model evaluation, comparison, and analysis. To establish evaluation on these tasks, we report empirical results with the current 11 pre-trained Chinese models, and experimental results show that state-of-the-art neural models perform by far worse than the human ceiling.",
 }
 ```
 

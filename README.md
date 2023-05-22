@@ -8,7 +8,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/CBLUEbenchmark/CBLUE?style=flat-square)](https://github.com/CBLUEbenchmark/CBLUE/stargazers)
 ![](https://img.shields.io/badge/PRs-Welcome-red) 
 
-AI (Artificial Intelligence) plays an indispensable role in the biomedical field, helping improve medical technology. For further accelerating AI research in the biomedical field, we present **Chinese Biomedical Language Understanding Evaluation** (CBLUE), including datasets collected from real-world biomedical scenarios, baseline models,  and an online platform for model evaluation, comparison, and analysis.
+AI (Artificial Intelligence) plays an indispensable role in the biomedical field, helping improve medical technology. For further accelerating AI research in the biomedical field, we present [**Chinese Biomedical Language Understanding Evaluation**](https://arxiv.org/pdf/2106.08087.pdf) (CBLUE), including datasets collected from real-world biomedical scenarios, baseline models,  and an online platform for model evaluation, comparison, and analysis.
 
 ## CBLUE Benchmark
 
@@ -173,6 +173,45 @@ python baselines/run_classifier.py \
 ```
 
 **Notice: the result of prediction** `{TASK_NAME}_test.json` **will be generated in** `RESULT_OUTPUT_DIR` .
+
+### Check format
+Before you submit the predicted test files, you could check the format of test files using `format_checker` and avoid the invalid evalution score induced by the format errors.
+
+* Step1: Copy the original test file(without answer) {taskname}_test.[json|jsonl|tsv] to this directory `format_checker`, and rename as {taskname}_test_raw.[json|jsonl|tsv].
+```shell
+# take the CMeEE task for example:
+cp ${path_to_CMeEE}/CMeEE_test.json ${current_dir}/CMeEE_test_raw.json 
+```
+* Step2: Execute the following format_checker script using the raw test file (from Step1) and your prediction file:
+```shell
+python3 format_checker_${taskname}.py {taskname}_test_raw.[json|jsonl|tsv] {taskname}_test.[json|jsonl|tsv] 
+
+# take the CMeEE task for example:
+python3 format_checker_CMeEE.py CMeEE_test_raw.json CMeEE_test.json
+```
+#### What is special? 
+##### IMCS-NER & IMCS-V2-NER tasks:
+* Step1: Copy both the original test file(without answer) IMCS-NER_test.json(IMCS-V2-NER_test.json) and the IMCS_test.json(IMCS-V2_test.json) to this directory, and rename as IMCS-NER_test_raw.json(IMCS-V2-NER_test_raw.json)
+```shell
+# for IMCS-NER task:
+cp ${path_to_IMCS-NER}/IMCS-NER_test.json ${current_dir}/IMCS-NER_test_raw.json 
+cp ${path_to_IMCS-NER}/IMCS_test.json ${current_dir}
+# for IMCS-V2-NER task:
+cp ${path_to_IMCS-V2-NER}/IMCS-V2-NER_test.json ${current_dir}/IMCS-V2-NER_test_raw.json 
+cp ${path_to_IMCS-V2-NER}/IMCS-V2_test.json ${current_dir}
+```
+* Step2: Execute the following format_checker script using the raw test file (from Step1) and your prediction file:
+```shell
+# for IMCS-NER task:
+python3 format_checker_IMCS_V1_NER.py  IMCS-NER_test_raw.json IMCS-NER_test.json IMCS_test.json
+# for IMCS-V2-NER task:
+python3 format_checker_IMCS_V2_NER.py  IMCS-V2-NER_test_raw.json IMCS-V2-NER_test.json IMCS-V2_test.json
+```
+##### IMCS-SR & IMCS-V2-SR, MedDG tasks
+If you want to implement the optional check login in the *check_format* function, which is commented in the master branch. You need also copy the normalized dictionary files to the current dir.
+* MedDG: the dictionary file is *entity_list.txt*
+* IMCS-SR: the dictionary file is *symptom_norm.csv*
+* IMCS-V2-SR:  the dictionary file is *mappings.json*
 
 ### Submit results
 
@@ -697,11 +736,39 @@ Hyper-parameters for the training of pre-trained models with a sequence classifi
 ## How to Cite
 
 ```bibtex
-@article{zhang2021cblue,
-title={CBLUE: A Chinese Biomedical Language Understanding Evaluation Benchmark},
-author={Ningyu Zhang and Mosha Chen and Zhen Bi and Xiaozhuan Liang and Lei Li and Xin Shang and Kangping Yin and Chuanqi Tan and Jian Xu and Fei Huang and Luo Si and Yuan Ni and Guotong Xie and Zhifang Sui and Baobao Chang and Hui Zong and Zheng Yuan and Linfeng Li and Jun Yan and Hongying Zan and Kunli Zhang and Buzhou Tang and Qingcai Chen},
-journal={arXiv preprint arXiv:2106.08087},
-year={2021}
+@inproceedings{zhang-etal-2022-cblue,
+    title = "{CBLUE}: A {C}hinese Biomedical Language Understanding Evaluation Benchmark",
+    author = "Zhang, Ningyu  and
+      Chen, Mosha  and
+      Bi, Zhen  and
+      Liang, Xiaozhuan  and
+      Li, Lei  and
+      Shang, Xin  and
+      Yin, Kangping  and
+      Tan, Chuanqi  and
+      Xu, Jian  and
+      Huang, Fei  and
+      Si, Luo  and
+      Ni, Yuan  and
+      Xie, Guotong  and
+      Sui, Zhifang  and
+      Chang, Baobao  and
+      Zong, Hui  and
+      Yuan, Zheng  and
+      Li, Linfeng  and
+      Yan, Jun  and
+      Zan, Hongying  and
+      Zhang, Kunli  and
+      Tang, Buzhou  and
+      Chen, Qingcai",
+    booktitle = "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.acl-long.544",
+    pages = "7888--7915",
+    abstract = "Artificial Intelligence (AI), along with the recent progress in biomedical language understanding, is gradually offering great promise for medical practice. With the development of biomedical language understanding benchmarks, AI applications are widely used in the medical field. However, most benchmarks are limited to English, which makes it challenging to replicate many of the successes in English for other languages. To facilitate research in this direction, we collect real-world biomedical data and present the first Chinese Biomedical Language Understanding Evaluation (CBLUE) benchmark: a collection of natural language understanding tasks including named entity recognition, information extraction, clinical diagnosis normalization, single-sentence/sentence-pair classification, and an associated online platform for model evaluation, comparison, and analysis. To establish evaluation on these tasks, we report empirical results with the current 11 pre-trained Chinese models, and experimental results show that state-of-the-art neural models perform by far worse than the human ceiling.",
 }
 ```
 
