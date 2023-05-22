@@ -3,7 +3,7 @@ from pathlib import Path
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
-parser.add_argument("result-dir")
+parser.add_argument("result_dir")
 
 
 def convert(result_dir: str):
