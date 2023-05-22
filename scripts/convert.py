@@ -15,7 +15,14 @@ def convert(result_dir: str):
     for sample in data:
         for entity in sample["entities"]:
             entity["end_idx"] = entity["end_idx"] + 1
-    file.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+
+    new_file = dir / "CMeEE-V2_test.json"
+    new_file.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+
+    # convert CMeIE v1 to v2
+    file = dir / "CMeIE_test.jsonl"
+    new_file = dir / "CMeIE-V2_test.jsonl"
+    new_file.write_text(file.read_text())
 
 
 if __name__ == "__main__":
