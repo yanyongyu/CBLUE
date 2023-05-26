@@ -62,9 +62,11 @@ def switch_dataset():
     if ORIGIN_DATASET_DIR.exists() and not FEW_SHOT_DATASET_DIR.exists():
         DATASET_DIR.rename(FEW_SHOT_DATASET_DIR)
         ORIGIN_DATASET_DIR.rename(DATASET_DIR)
+        print("Using origin dataset.")
     elif FEW_SHOT_DATASET_DIR.exists() and not ORIGIN_DATASET_DIR.exists():
         DATASET_DIR.rename(ORIGIN_DATASET_DIR)
         FEW_SHOT_DATASET_DIR.rename(DATASET_DIR)
+        print("Using few-shot dataset.")
     else:
         raise RuntimeError("Dataset not valid!")
 
