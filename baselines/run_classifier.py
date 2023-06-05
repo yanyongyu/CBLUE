@@ -91,7 +91,7 @@ TOKEN_MODEL_CLASS = {
             )
         ),
     ),
-    "bert-adapter": (BertTokenizer, adapter(BertForSequenceClassification)),
+    "bert-adapter": (BertTokenizer, adapter(BertForTokenClassification)),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertForTokenClassification)),
