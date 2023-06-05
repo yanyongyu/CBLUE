@@ -7,6 +7,7 @@ import argparse
 import torch
 from transformers import BertModel, AlbertModel, BertTokenizer
 from nlppets.transformers.model.bert import (
+    adapter,
     domain_enhance_att,
     domain_enhance_ffn,
 )
@@ -28,6 +29,7 @@ MODEL_CLASS = {
             )
         ),
     ),
+    "bert-adapter": (BertTokenizer, adapter(BertModel)),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertModel)),

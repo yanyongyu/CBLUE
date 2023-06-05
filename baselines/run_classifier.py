@@ -6,6 +6,7 @@ import argparse
 
 import torch
 from nlppets.transformers.model.bert import (
+    adapter,
     domain_enhance_att,
     domain_enhance_ffn,
 )
@@ -71,6 +72,7 @@ MODEL_CLASS = {
             )
         ),
     ),
+    "bert-adapter": (BertTokenizer, adapter(BertForSequenceClassification)),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertForSequenceClassification)),
@@ -89,6 +91,7 @@ TOKEN_MODEL_CLASS = {
             )
         ),
     ),
+    "bert-adapter": (BertTokenizer, adapter(BertForSequenceClassification)),
     "domain-enhance": (
         BertTokenizer,
         domain_enhance_att(domain_enhance_ffn(BertForTokenClassification)),
